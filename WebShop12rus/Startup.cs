@@ -40,7 +40,7 @@ namespace WebShop12rus
                 // Добавляем обработчик маршрута по умолчанию
                 routes.MapRoute(
                      name: "default",
-                     template: "{controller=Home}/action=Index}/{id?}");
+                     template: "{controller=Home}/{action=Index}/{id?}");
                 // Маршрут по умолчанию состоит из трех частей разделенных '/'
                 // Первой частью указывается имя контроллера,
                 // второй - имя действия (метода) в контроллере,
