@@ -1,8 +1,6 @@
 ﻿@{
-    ViewData["Title"] = "e-Shop | Home";
+    ViewData["Title"] = "Product details";
 }
-
-@await Html.PartialAsync(partialViewName: "Partial/_IndexSlider")
 
 <section>
     <div class="container">
@@ -12,7 +10,7 @@
             </div>
 
             <div class="col-sm-9 padding-right">
-                @await Html.PartialAsync(partialViewName: "Partial/_FeaturesItems")
+                @await Html.PartialAsync(partialViewName: "Partial/_ProductDetails")
 
                 @await Html.PartialAsync(partialViewName: "Partial/_CategoryTab")
 

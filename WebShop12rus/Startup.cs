@@ -33,6 +33,8 @@ namespace WebShop12rus
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseStaticFiles();
+
             //app.UseMvcWithDefaultRoute();
             // Конфигурация инфраструктуры MVC
             app.UseMvc(routes =>
