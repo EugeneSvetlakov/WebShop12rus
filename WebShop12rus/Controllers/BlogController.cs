@@ -6,19 +6,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebShop12rus.Controllers
 {
-    public class HomeController : Controller
+    public class BlogController : Controller
     {
-        public IActionResult Index()
+        public IActionResult BlogList()
         {
             return View();
         }
 
-        public IActionResult Contact()
-        {
-            return View();
-        }
-
-        public IActionResult PageNotFound()
+        public IActionResult BlogSingl()
         {
             return View();
         }
