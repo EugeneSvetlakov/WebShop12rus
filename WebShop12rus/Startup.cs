@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WebShop12rus.Infrastructure;
+using WebShop12rus.Infrastructure.Interfaces;
+using WebShop12rus.Infrastructure.Services;
 
 namespace WebShop12rus
 {
@@ -22,7 +25,12 @@ namespace WebShop12rus
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services.AddMvc(options => 
+            {
+                options.Filters.Add(new SimpleActionFilterAttribute());
+            });
+
+            services.AddSingleton<IEmployeeService, EmployeeService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
