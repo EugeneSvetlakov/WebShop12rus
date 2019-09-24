@@ -53,7 +53,18 @@ namespace WebShop12rus.Controllers
         [Route("edit/{id?}")]
         public IActionResult Edit(EmployeeView model)
         {
-            if(model.Id > 0) // если есть Id - редактируем модель
+            // Дополнительные проверки должны быть до if(!ModelState.IsValid)
+            if (model.Age > 90)
+            {
+                ModelState.AddModelError("Age", errorMessage: "Возраст не может быть > 90 лет");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            if (model.Id > 0) // если есть Id - редактируем модель
             {
                 var dbItem = _employeeService.GetById(model.Id);
 
