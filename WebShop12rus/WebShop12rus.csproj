@@ -36,4 +36,8 @@
     <Folder Include="Views\Home\Partial\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\WebStore.Domain\WebShop12rus.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebShop12rus.Controllers
 {
-    public class ProductController : Controller
+    public class ShopController : Controller
     {
         public IActionResult Products()
         {

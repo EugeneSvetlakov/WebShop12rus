@@ -30,7 +30,8 @@ namespace WebShop12rus
                 options.Filters.Add(new SimpleActionFilterAttribute());
             });
 
-            services.AddSingleton<IEmployeeService, EmployeeService>();
+            services.AddSingleton<IProductService, InMemoryProductService>();
+            services.AddScoped<IEmployeeService, EmployeeService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
