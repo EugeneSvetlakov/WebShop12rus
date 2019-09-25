@@ -31,7 +31,7 @@ namespace WebShop12rus
             });
 
             services.AddSingleton<IProductService, InMemoryProductService>();
-            services.AddScoped<IEmployeeService, EmployeeService>();
+            services.AddSingleton<IEmployeeService, EmployeeService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
