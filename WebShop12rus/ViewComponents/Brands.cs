@@ -39,7 +39,8 @@ namespace WebShop12rus.ViewComponents
                     Id = brand.Id,
                     Name = brand.Name,
                     Order = brand.Order,
-                    ProductCount = _productService
+                    ProductCount =
+                                _productService
                                 .GetProducts(new ProductFilter { BrandId = brand.Id })?
                                 .Count() ?? null
                 });

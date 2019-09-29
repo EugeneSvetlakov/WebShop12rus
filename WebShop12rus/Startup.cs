@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WebShop12rus.DAL;
 using WebShop12rus.Infrastructure;
 using WebShop12rus.Infrastructure.Interfaces;
 using WebShop12rus.Infrastructure.Services;
@@ -30,8 +32,11 @@ namespace WebShop12rus
                 options.Filters.Add(new SimpleActionFilterAttribute());
             });
 
-            services.AddSingleton<IProductService, InMemoryProductService>();
+            //services.AddSingleton<IProductService, InMemoryProductService>(); // Данные из памяти
+            services.AddScoped<IProductService, SqlProductService>(); // Данные из БД
             services.AddSingleton<IEmployeeService, EmployeeService>();
+            services.AddDbContext<WebShop12rusDbContext>(options => options.UseSqlServer(
+                Configuration.GetConnectionString("DefaultConnection")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
