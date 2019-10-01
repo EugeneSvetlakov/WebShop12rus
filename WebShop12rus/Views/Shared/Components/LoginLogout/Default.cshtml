@@ -1,0 +1,12 @@
+﻿@if (User.Identity.IsAuthenticated)
+{
+    <span>@User.Identity.Name</span>
+    <form method="post" asp-controller="Account" asp-action="Logout" asp-antiforgery="true">
+        <input type="submit" value="Выход" class="btn btn-link" />
+</form>
+    <input type="submit" value="Выход" class="btn" />
+}
+else
+{
+
+}
