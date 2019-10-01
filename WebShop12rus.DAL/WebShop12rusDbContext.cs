@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,7 +13,7 @@ namespace WebShop12rus.DAL
     // Add-Migration -Project WebShop12rus.DAL -Name Initial
     // Обновить БД:
     // Update-Database
-    public class WebShop12rusDbContext : DbContext
+    public class WebShop12rusDbContext : IdentityDbContext<User>
     {
         public WebShop12rusDbContext(DbContextOptions options) : base(options)
         {
