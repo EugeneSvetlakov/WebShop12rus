@@ -52,7 +52,8 @@ namespace WebShop12rus.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [HttpPost, ValidateAntiForgeryToken]
+        //[HttpPost, ValidateAntiForgeryToken]
+        [HttpGet]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
