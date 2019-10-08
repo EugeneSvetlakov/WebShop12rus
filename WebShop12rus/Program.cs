@@ -27,6 +27,8 @@ namespace WebShop12rus
                     WebShop12rusDbContext context = services.GetRequiredService<WebShop12rusDbContext>();
 
                     DbInitializer.Initialize(context);
+
+                    DbInitializer.InitializeUsers(services);
                 }
                 catch (Exception ex)
                 {

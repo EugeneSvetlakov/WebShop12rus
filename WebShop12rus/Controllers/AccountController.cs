@@ -88,7 +88,9 @@ namespace WebShop12rus.Controllers
                 }
             }
 
-            await _signInManager.SignInAsync(user, false);
+            await _userManager.AddToRoleAsync(user, "Users"); // поумолчанию присваиваем роль Users
+
+            await _signInManager.SignInAsync(user, false); // Авторизация под вновь созданным Аккаунтом
 
             return RedirectToAction("Index", "Home");
         }

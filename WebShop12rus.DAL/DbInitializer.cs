@@ -1,7 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using WebShop12rus.Domain.Entities;
 
 namespace WebShop12rus.DAL
@@ -13,13 +16,13 @@ namespace WebShop12rus.DAL
         {
             // Проверка что база есть
             context.Database.EnsureCreated();
-            
+
             // Проверка что база имеет записи
             if (context.Products.Any())
             {
                 return; // Завершение "стартового наполнения"
             }
-            
+
             // Внесение категорий
             var categories = new List<Category>
             {
@@ -445,6 +448,42 @@ namespace WebShop12rus.DAL
                 context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Products] OFF");
                 trans.Commit();
             }
+        }
+
+        public static void InitializeUsers(IServiceProvider services)
+        {
+            var roleManager = services.GetService<RoleManager<IdentityRole>>();
+
+            EnsureRole(roleManager, "Users");
+            EnsureRole(roleManager, "Administrators");
+
+            EnsureRoleToUser(services, "Admin", "Administrators", "admin123");
+        }
+
+        private static void EnsureRoleToUser(IServiceProvider services, string userName, string roleName, string pass)
+        {
+            var userManager = services.GetService<UserManager<User>>();
+            var users = services.GetService<IUserStore<User>>();
+
+            if(users.FindByNameAsync(userName, CancellationToken.None).Result != null)
+            {
+                return;
+            }
+
+            var adminUser = new User
+            {
+                UserName = userName,
+                Email = $"{userName}@domain.com"
+            };
+
+            if (userManager.CreateAsync(adminUser, pass).Result.Succeeded) // добавление пользователя в БД
+                userManager.AddToRoleAsync(adminUser, roleName).Wait(); // назначение роли
+        }
+
+        private static void EnsureRole(RoleManager<IdentityRole> roleManager, string roleName)
+        {
+            if (!roleManager.RoleExistsAsync(roleName).Result)
+                roleManager.CreateAsync(new IdentityRole(roleName)).Wait();
         }
     }
 }

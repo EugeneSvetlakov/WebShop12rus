@@ -51,7 +51,7 @@ namespace WebShop12rus
                 o.Password.RequireDigit = false;
                 o.Password.RequireLowercase = false;
                 o.Password.RequireNonAlphanumeric = false;
-
+                o.Password.RequireUppercase = false;
                 o.User.RequireUniqueEmail = true;
             });
 
