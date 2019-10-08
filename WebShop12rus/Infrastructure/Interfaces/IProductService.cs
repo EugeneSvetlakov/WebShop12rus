@@ -14,5 +14,7 @@ namespace WebShop12rus.Infrastructure.Interfaces
         IEnumerable<Category> GetCategories();
 
         IEnumerable<Product> GetProducts(ProductFilter filter);
+
+        Product GetProductById(int id);
     }
 }

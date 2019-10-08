@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using WebShop12rus.Domain.Entities;
@@ -21,9 +22,10 @@ namespace WebShop12rus.Controllers
         }
 
         [HttpGet]
-        public IActionResult Login()
+        public IActionResult Login(string returnUrl)
         {
-            return View(new LoginViewModel());
+            var model = new LoginViewModel {ReturnUrl = returnUrl };
+            return View(model);
         }
 
         [HttpPost, ValidateAntiForgeryToken]
@@ -46,7 +48,7 @@ namespace WebShop12rus.Controllers
 
             if (Url.IsLocalUrl(model.ReturnUrl)) // если Url локальный
             {
-                return Redirect(model.ReturnUrl);
+                return Redirect(model.ReturnUrl); //model.ReturnUrl
             }
 
             return RedirectToAction("Index", "Home");

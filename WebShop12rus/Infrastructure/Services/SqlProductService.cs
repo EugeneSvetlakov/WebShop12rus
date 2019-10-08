@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -28,9 +29,20 @@ namespace WebShop12rus.Infrastructure.Services
             return _context.Categories.ToList();
         }
 
+        public Product GetProductById(int id)
+        {
+            return _context.Products
+                .Include(p => p.Category) // "жадная загрузка" - механизм EF
+                .Include(p=> p.Brand) // "жадная загрузка" - механизм EF
+                .FirstOrDefault(p => p.Id == id);
+        }
+
         public IEnumerable<Product> GetProducts(ProductFilter filter)
         {
-            var query = _context.Products.AsQueryable();
+            var query = _context.Products
+                .Include(p=> p.Category)
+                .Include(p=> p.Brand)
+                .AsQueryable();
             if (filter.BrandId.HasValue)
             {
                 query = query.Where(c => c.BrandId.HasValue && c.BrandId.Value.Equals(filter.BrandId.Value));

@@ -19,6 +19,7 @@
                     <input asp-for="RememberMe" class="checkbox">
                     @nameof(Model.RememberMe)
                 </span>
+                <input asp-for="ReturnUrl" readonly class="invisible" />
                 <button type="submit" class="btn btn-default">Войти</button>
             </form>
         </div><!--/login form-->
