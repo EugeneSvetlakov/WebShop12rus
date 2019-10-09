@@ -58,6 +58,10 @@ namespace WebShop12rus
             services.ConfigureApplicationCookie(o => {
                 o.Cookie.Expiration = TimeSpan.FromDays(100);
             });
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>(); // для доступа к Cookies
+
+            services.AddScoped<ICartService, CookieCartService>(); // Сервис Корзины на Cookies
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

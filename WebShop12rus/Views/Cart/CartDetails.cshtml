@@ -1,4 +1,5 @@
-﻿@{
+﻿@model CartViewModel
+@{
     ViewData["Title"] = "Cart";
 }
 
@@ -11,7 +12,73 @@
             </ol>
         </div>
 
-        @await Html.PartialAsync(partialViewName: "Partial/_CartItems")
+        @*@await Html.PartialAsync(partialViewName: "Partial/_CartItems")*@
+
+        <div class="table-responsive cart_info">
+            <table class="table table-condensed">
+                <thead>
+                    <tr class="cart_menu">
+                        <td class="image">Товар</td>
+                        <td class="description"></td>
+                        <td class="price">Цена</td>
+                        <td class="quantity">Количество</td>
+                        <td class="total">Общая Сумма</td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Items)
+                    {
+                        <tr>
+                            <td class="cart_product">
+                                <a href=""><img src="~/images/shop/@item.Key.ImageUrl" alt=""></a>
+                            </td>
+                            <td class="cart_description">
+                                <h4>
+                                    <a asp-controller="Catalog"
+                                       asp-action="ProductDetails"
+                                       asp-route-id="@item.Key.Id">
+                                        @item.Key.Name
+                                    </a>
+                                </h4>
+                                <p>Web ID: 1089772</p>
+                            </td>
+                            <td class="cart_price">
+                                <p>@item.Key.Price.ToString("C")</p>
+                            </td>
+                            <td class="cart_quantity">
+                                <div class="cart_quantity_button">
+                                    <a class="cart_quantity_up"
+                                       asp-controller="Cart"
+                                       asp-action="AddToCart"
+                                       asp-route-id="@item.Key.Id"
+                                       asp-route-returnUrl="@Context.Request.Path">
+                                        +
+                                    </a>
+                                    <input class="cart_quantity_input" readonly value="@item.Value" name="quantity" autocomplete="off" size="2">
+                                    <a class="cart_quantity_down"
+                                       asp-controller="Cart"
+                                       asp-action="DecrementFromCart"
+                                       asp-route-id="@item.Key.Id">
+                                        -
+                                    </a>
+                                </div>
+                            </td>
+                            <td class="cart_total">
+                                <p class="cart_total_price">@((item.Value * item.Key.Price).ToString("C"))</p>
+                            </td>
+                            <td class="cart_delete">
+                                <a class="cart_quantity_delete"
+                                   asp-controller="Cart"
+                                   asp-action="RemoveFromCart">
+                                    <i class="fa fa-times"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
 
     </div>
 </section> <!--/#cart_items-->
@@ -80,10 +147,11 @@
             <div class="col-sm-6">
                 <div class="total_area">
                     <ul>
-                        <li>Cart Sub Total <span>$59</span></li>
-                        <li>Eco Tax <span>$2</span></li>
-                        <li>Shipping Cost <span>Free</span></li>
-                        <li>Total <span>$61</span></li>
+                        <li>Сумма <span>@Model.Items.Sum(x => x.Value * x.Key.Price).ToString("C")</span></li>
+                        <li>Общая скидка <span>@Model.Discount.ToString("C")</span></li>
+                        @*<li>Eco Tax <span>$2</span></li>*@
+                        <li>Цена доставки <span>Free</span></li>
+                        <li>К оплате <span>@((Model.Items.Sum(x => x.Value * x.Key.Price) - Model.Discount).ToString("C"))</span></li>
                     </ul>
                     <a class="btn btn-default update" href="">Update</a>
                     <a class="btn btn-default check_out" href="">Check Out</a>
