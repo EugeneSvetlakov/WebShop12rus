@@ -19,6 +19,7 @@ namespace WebShop12rus.Infrastructure.Services
             this._context = context;
         }
 
+
         public IEnumerable<Brand> GetBrands()
         {
             return _context.Brands.ToList();
@@ -54,5 +55,28 @@ namespace WebShop12rus.Infrastructure.Services
 
             return query.ToList();
         }
+
+        public void EditProduct(Product product)
+        {
+            var DbProduct = _context.Products.First(p => p.Id == product.Id);
+
+            if(product.Id == DbProduct.Id)
+            {
+                DbProduct.Name = product.Name;
+                DbProduct.Price = product.Price;
+            }
+            else
+            {
+                _context.Products.Add(product);
+            }
+
+            _context.SaveChanges();
+        }
+
+        public void DeleteProduct(int id)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

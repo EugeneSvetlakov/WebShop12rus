@@ -1,4 +1,4 @@
-﻿@model CartViewModel
+﻿@model OrderDetailsViewModel
 @{
     ViewData["Title"] = "Cart";
 }
@@ -27,7 +27,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model.Items)
+                    @foreach (var item in Model.CartViewModel.Items)
                     {
                         <tr>
                             <td class="cart_product">
@@ -147,16 +147,22 @@
             <div class="col-sm-6">
                 <div class="total_area">
                     <ul>
-                        <li>Сумма <span>@Model.Items.Sum(x => x.Value * x.Key.Price).ToString("C")</span></li>
-                        <li>Общая скидка <span>@Model.Discount.ToString("C")</span></li>
+                        <li>Сумма <span>@Model.CartViewModel.Items.Sum(x => x.Value * x.Key.Price).ToString("C")</span></li>
+                        <li>Общая скидка <span>@Model.CartViewModel.Discount.ToString("C")</span></li>
                         @*<li>Eco Tax <span>$2</span></li>*@
                         <li>Цена доставки <span>Free</span></li>
-                        <li>К оплате <span>@((Model.Items.Sum(x => x.Value * x.Key.Price) - Model.Discount).ToString("C"))</span></li>
-                    </ul>
-                    <a class="btn btn-default update" href="">Update</a>
-                    <a class="btn btn-default check_out" href="">Check Out</a>
-                </div>
+                        <li>
+                            К оплате <span>
+                                @((Model.CartViewModel.Items
+.Sum(x => x.Value * x.Key.Price) - Model.CartViewModel.Discount)
+.ToString("C"))
+                        </span>
+                    </li>
+                </ul>
+                <a class="btn btn-default update" href="">Update</a>
+                <a class="btn btn-default check_out" href="">Check Out</a>
             </div>
         </div>
     </div>
+</div>
 </section><!--/#do_action-->

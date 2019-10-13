@@ -448,5 +448,15 @@ namespace WebShop12rus.Infrastructure.Services
         {
             return _products.FirstOrDefault(p => p.Id == id);
         }
+
+        public void EditProduct(Product product)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteProduct(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

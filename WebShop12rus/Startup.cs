@@ -80,6 +80,10 @@ namespace WebShop12rus
             // Конфигурация инфраструктуры MVC
             app.UseMvc(routes =>
             {
+                // Маршрут для Areas
+                routes.MapRoute(
+                     name: "areas",
+                     template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
                 // Добавляем обработчик маршрута по умолчанию
                 routes.MapRoute(
                      name: "default",
