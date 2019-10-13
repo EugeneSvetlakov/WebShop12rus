@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebShop12rus.Infrastructure.Interfaces;
 using WebShop12rus.Infrastructure.Services;
@@ -9,6 +10,7 @@ using WebShop12rus.ViewModels;
 
 namespace WebShop12rus.Controllers
 {
+    [Authorize]
     public class CartController : Controller
     {
         private readonly ICartService _cartService;
@@ -84,7 +86,7 @@ namespace WebShop12rus.Controllers
 
         public IActionResult OrderConfimed(int id)
         {
-
+            ViewData["Id"] = id;
             return View();
         }
     }

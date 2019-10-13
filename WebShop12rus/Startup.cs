@@ -36,6 +36,7 @@ namespace WebShop12rus
 
             //services.AddSingleton<IProductService, InMemoryProductService>(); // Данные из памяти
             services.AddScoped<IProductService, SqlProductService>(); // Данные из БД
+            services.AddScoped<IOrderService, SqlOrderService>(); // Данные из БД
             services.AddSingleton<IEmployeeService, EmployeeService>();
             services.AddDbContext<WebShop12rusDbContext>(options => options.UseSqlServer(
                 Configuration.GetConnectionString("DefaultConnection")));
