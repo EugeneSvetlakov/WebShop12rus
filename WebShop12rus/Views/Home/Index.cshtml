@@ -1,16 +1,23 @@
-﻿
-@{
-    Layout = null;
+﻿@{
+    ViewData["Title"] = "e-Shop | Home";
 }
 
-<!DOCTYPE html>
+@await Html.PartialAsync(partialViewName: "Partial/_IndexSlider")
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
-</head>
-<body>
-    <h2>Привет из представления</h2>
-</body>
-</html>
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+                @await Html.PartialAsync(partialViewName: "Partial/_LeftSidebar")
+            </div>
+
+            <div class="col-sm-9 padding-right">
+                @await Html.PartialAsync(partialViewName: "Partial/_FeaturesItems")
+
+                @await Html.PartialAsync(partialViewName: "Partial/_CategoryTab")
+
+                @await Html.PartialAsync(partialViewName: "Partial/_RecommendedItems")
+            </div>
+        </div>
+    </div>
+</section>

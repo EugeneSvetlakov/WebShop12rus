@@ -5,8 +5,15 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WebShop12rus.DAL;
+using WebShop12rus.Domain.Entities;
+using WebShop12rus.Infrastructure;
+using WebShop12rus.Infrastructure.Interfaces;
+using WebShop12rus.Infrastructure.Services;
 
 namespace WebShop12rus
 {
@@ -22,7 +29,40 @@ namespace WebShop12rus
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services.AddMvc(options => 
+            {
+                options.Filters.Add(new SimpleActionFilterAttribute());
+            });
+
+            //services.AddSingleton<IProductService, InMemoryProductService>(); // Данные из памяти
+            services.AddScoped<IProductService, SqlProductService>(); // Данные из БД
+            services.AddScoped<IOrderService, SqlOrderService>(); // Данные из БД
+            services.AddSingleton<IEmployeeService, EmployeeService>();
+            services.AddDbContext<WebShop12rusDbContext>(options => options.UseSqlServer(
+                Configuration.GetConnectionString("DefaultConnection")));
+            // подключенеи аутентификации
+            services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<WebShop12rusDbContext>()
+                .AddDefaultTokenProviders()
+                ;
+            
+            // доп настройка сервиса Аутентификации
+            services.Configure<IdentityOptions>(o => {
+                o.Password.RequiredLength = 3;
+                o.Password.RequireDigit = false;
+                o.Password.RequireLowercase = false;
+                o.Password.RequireNonAlphanumeric = false;
+                o.Password.RequireUppercase = false;
+                o.User.RequireUniqueEmail = true;
+            });
+
+            services.ConfigureApplicationCookie(o => {
+                o.Cookie.Expiration = TimeSpan.FromDays(100);
+            });
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>(); // для доступа к Cookies
+
+            services.AddScoped<ICartService, CookieCartService>(); // Сервис Корзины на Cookies
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -33,10 +73,18 @@ namespace WebShop12rus
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseStaticFiles();
+
+            app.UseAuthentication(); // !!! размещать после UseStaticFiles()
+
             //app.UseMvcWithDefaultRoute();
             // Конфигурация инфраструктуры MVC
             app.UseMvc(routes =>
             {
+                // Маршрут для Areas
+                routes.MapRoute(
+                     name: "areas",
+                     template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
                 // Добавляем обработчик маршрута по умолчанию
                 routes.MapRoute(
                      name: "default",
